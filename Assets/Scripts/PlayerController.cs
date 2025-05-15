@@ -1,9 +1,13 @@
+using System.Collections;
 using System.Runtime.InteropServices;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+// Importante para el Hashtable a la hora de sincronizar items entre clientes
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     [Header("Camera Holder")]
     public GameObject cameraHolder;
@@ -74,11 +78,11 @@ public class PlayerController : MonoBehaviour
         // *** Nota: Esta parte de codigo esta usando el Input antiguo
         // De momento no se como implementar esto usando Input System asique se va a quedar asi
         // Recorremos toda la lista de items que tiene el personaje
-        for(int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Length; i++)
         {
             // Cuando pulsamos la tecla i + 1 (0 + 1 = Tecla 1)
             // Llamamos a la funcion EquipItem con el indice que hayamos pulsado
-            if(Input.GetKeyDown((i + 1).ToString()))
+            if (Input.GetKeyDown((i + 1).ToString()))
             {
                 EquipItem(i);
                 break;
@@ -123,18 +127,34 @@ public class PlayerController : MonoBehaviour
 
     void EquipItem(int _index)
     {
-        if(_index == previousItemIndex) return;
+        if (_index == previousItemIndex) return;
 
         itemIndex = _index;
 
         items[itemIndex].itemGameObject.SetActive(true);
 
-        if(previousItemIndex != -1)
+        if (previousItemIndex != -1)
         {
             items[previousItemIndex].itemGameObject.SetActive(false);
         }
 
         previousItemIndex = itemIndex;
+
+        if (pv.IsMine)
+        {
+            Hashtable hash = new Hashtable();
+            hash.Add("itemIndex", itemIndex);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (!pv.IsMine && targetPlayer == pv.Owner)
+        {
+            // cast (int) para evitar error: cannot convert from 'object' to 'int'
+            EquipItem((int)changedProps["itemIndex"]);
+        }
     }
 
     // === SET GROUNDED ===
@@ -165,14 +185,14 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnSprint(InputAction.CallbackContext context)
-    {   
+    {
         // Si se mantiene presionada la tecla
         if (context.performed && grounded)
         {
             isSprinting = true;
         }
         // Cuando se suelta ponemos la variable en false
-        else if(context.canceled)
+        else if (context.canceled)
         {
             isSprinting = false;
         }
