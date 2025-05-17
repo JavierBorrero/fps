@@ -41,4 +41,29 @@ Diagrama:
 
 ![diagrama](images_readme/diagrama-clases-abstractas.PNG)
 
-## Otro titulo
+## Pun Remote Procedure Calls (RPCs)
+
+Documentación de Photon sobre [RPCs](https://doc.photonengine.com/pun/current/gameplay/rpcsandraiseevent)
+
+RPCs (Remote Procedure Calls) son llamadas a métodos en los clientes remotos que se encuentran en la misma sala. Para habilitar esta llamada tienes que añadir `[PunRPC]` al método que quieras que se ejecute en el resto de clientes.
+
+``` C#
+[PunRPC]
+void ChatMessage(string a, string b)
+{
+    Debu.Log(string.Format("ChatMessage {0} {1}", a, b));
+}
+```
+
+Para hacer llamadas a estos métodos necesitas un componente `PhotonView` y se usa de la siguiente forma:
+
+- Entre comillas el nombre del método marcado con `[PunRPC]`
+- A quien va a ser enviado este método `RpcTarget.All` (a todos)
+- Los parámetros de la función.
+
+``` C#
+PhotonView pv = PhotonView.Get(this)
+pv.RPC("ChatMessage", RpcTarget.All, "jup", "and jup");
+```
+
+El componente `PhotonView` es un "objetivo" para el RPC. Todos los clientes ejecutan el método sólo en el GameObject en la red con ese PhotonView específico. Si usas un método RPC `ApplyDamage`, todos los clientes que reciben el método aplicarán el daño al mismo objetivo.

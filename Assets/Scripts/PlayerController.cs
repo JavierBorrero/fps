@@ -7,8 +7,11 @@ using UnityEngine.InputSystem;
 // Importante para el Hashtable a la hora de sincronizar items entre clientes
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
+    [Header("Player Manager")]
+    public PlayerManager playerManager;
+
     [Header("Camera Holder")]
     public GameObject cameraHolder;
 
@@ -22,7 +25,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     [Header("Jump")]
     public float jumpForce;
-
     public float smoothTime;
 
     // Gun Items
@@ -38,8 +40,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Vector3 moveAmount;
     Vector2 mouseInput;
     public Vector2 keyboardInput;
-
     public Vector3 moveDir;
+
+    const float maxHealth = 100f;
+    float currentHealth = maxHealth;
+
 
     Rigidbody rb;
     PhotonView pv;
@@ -48,6 +53,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         rb = GetComponent<Rigidbody>();
         pv = GetComponent<PhotonView>();
+        // 0 es el indice del ViewID que hemos pasado en el `Instantiate` del PlayerManager
+        // PhotonView.Find() nos va a dar el GameObject con ese ID
+        playerManager = PhotonView.Find((int)pv.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     void Start()
@@ -88,6 +96,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 break;
             }
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            items[itemIndex].Use();
+        }
     }
 
     void FixedUpdate()
@@ -125,6 +138,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         rb.AddForce(transform.up * jumpForce);
     }
 
+    // === EQUIP ITEMS ===
     void EquipItem(int _index)
     {
         if (_index == previousItemIndex) return;
@@ -148,6 +162,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
 
+    // Actualizar el objeto en la mano para el resto de jugadores
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!pv.IsMine && targetPlayer == pv.Owner)
@@ -161,6 +176,38 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void SetGroundedState(bool _grounded)
     {
         grounded = _grounded;
+    }
+
+    // === TAKE DAMAGE ===
+    //
+    // Esta funcion se llama cada vez que el jugador dispara y golpea a un jugador, y solo se llama desde el que ha disparado
+    // ** Explicacion de que es RPC en el README
+    public void TakeDamage(float damage)
+    {
+        pv.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
+    // Esta function se llama en el ordenador de cada jugador, pero `!pv.isMine` evita que sea a nostros
+    // a quien nos hace el daño y solo al resto de jugadores.
+    // ** Explicacion de que es RPC en el README
+    [PunRPC]
+    void RPC_TakeDamage(float damage)
+    {
+        // Asegurarnos de que esta funcion solo se activa en el otro usuario
+        if (!pv.IsMine)
+            return;
+
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        playerManager.Die();
     }
 
     // === INPUT SYSTEM ===

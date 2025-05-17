@@ -184,7 +184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5977011940660917400}
-  - component: {fileID: 6228411551480066187}
+  - component: {fileID: 943433048384332031}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -208,7 +208,7 @@ Transform:
   - {fileID: 8199365284215182963}
   m_Father: {fileID: 6386745361091811359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6228411551480066187
+--- !u!114 &943433048384332031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,11 +217,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1729537135452713413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94eff85c4183c9949b01f654b9886cd7, type: 3}
+  m_Script: {fileID: 11500000, guid: 39bf087d6ee7bb745aec82d9b0546de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: d465a29b6489dfe4c850e09ddcf6374f, type: 2}
   itemGameObject: {fileID: 5126660042796514590}
+  cam: {fileID: 8431415267288830790}
 --- !u!1 &2121947941948698964
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,7 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 123579758682937211}
-  - component: {fileID: 4502262526662775130}
+  - component: {fileID: 6561082982570996710}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -437,7 +438,7 @@ Transform:
   - {fileID: 857994477966972324}
   m_Father: {fileID: 6386745361091811359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4502262526662775130
+--- !u!114 &6561082982570996710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -446,11 +447,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4487886291075180025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94eff85c4183c9949b01f654b9886cd7, type: 3}
+  m_Script: {fileID: 11500000, guid: 39bf087d6ee7bb745aec82d9b0546de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: 9c85768c993fce94e989d4dfc48a8fa4, type: 2}
   itemGameObject: {fileID: 6104732365527657316}
+  cam: {fileID: 8431415267288830790}
 --- !u!1 &5126660042796514590
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14201887441aee349a4a66fc977a8db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   cameraHolder: {fileID: 5161402451294734894}
   mouseSensitivity: 1
   sprintSpeed: 10
@@ -708,8 +711,8 @@ MonoBehaviour:
   jumpForce: 300
   smoothTime: 0.15
   items:
-  - {fileID: 4502262526662775130}
-  - {fileID: 6228411551480066187}
+  - {fileID: 6561082982570996710}
+  - {fileID: 943433048384332031}
   grounded: 0
   keyboardInput: {x: 0, y: 0}
   moveDir: {x: 0, y: 0, z: 0}
