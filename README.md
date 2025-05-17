@@ -28,3 +28,17 @@ destruidos automaticamente por Photon.
 ```
 RoomManager -> PlayerManager -> PlayerController
 ```
+
+## Clases abstractas y herencia
+
+Vamos a tener una clase abstracta `Item`, con método abstracto `Use()`. Cada vez que queramos usar el objeto que tenemos en la mano, llamaremos al método `Use()`.
+
+En nuestro juego tenemos una clase `Gun` que va a implementar esta clase `Item`, así que podremos usar el método `Use()`. Las armas tendrán distintos scripts dependiendo de cual estemos utilizando. `SingleShotGun` para armas que disparen una bala a la vez (pistolas o rifles), y `Shotgun` para armas que disparan más de una bala a la vez (escopetas). Estos dos scripts implementan la clase `Gun`, y podrán hacer uso del método `Use()` de la clase `Item`.
+
+Lo importante de esta estructura es que a medida que añadimos más items al juego, la clase `PlayerController` no tiene que saber o implementar la existencia de cada uno de ellos, simplemente llamará al método `Use()` de ese arma/item.
+
+Diagrama:
+
+![diagrama](images_readme/diagrama-clases-abstractas.PNG)
+
+## Otro titulo
