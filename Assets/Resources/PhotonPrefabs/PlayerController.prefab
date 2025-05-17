@@ -185,6 +185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5977011940660917400}
   - component: {fileID: 943433048384332031}
+  - component: {fileID: 7537125021556105745}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -223,6 +224,28 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: d465a29b6489dfe4c850e09ddcf6374f, type: 2}
   itemGameObject: {fileID: 5126660042796514590}
   cam: {fileID: 8431415267288830790}
+--- !u!114 &7537125021556105745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729537135452713413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2121947941948698964
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 123579758682937211}
   - component: {fileID: 6561082982570996710}
+  - component: {fileID: 2237092661849604022}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -453,6 +477,28 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 9c85768c993fce94e989d4dfc48a8fa4, type: 2}
   itemGameObject: {fileID: 6104732365527657316}
   cam: {fileID: 8431415267288830790}
+--- !u!114 &2237092661849604022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4487886291075180025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &5126660042796514590
 GameObject:
   m_ObjectHideFlags: 0

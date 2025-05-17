@@ -101,6 +101,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             items[itemIndex].Use();
         }
+
+        // En caso de que el personaje se caiga del mapa por alguna razon
+        if (transform.position.y < -10f)
+        {
+            Die();
+        }
     }
 
     void FixedUpdate()

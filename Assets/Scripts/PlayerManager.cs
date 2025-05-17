@@ -27,10 +27,12 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         Debug.Log("Instantiated Player Controller");
+        // Obtenemos el punto de spawn de la clase `SpawnManager` con el metodo `GetSpawnPoint`
         // Instanciar el PlayerController
         // 0 es un parametro que significa `group` (no se exactamente para que sirve)
-        // el nuevo objeto sirve para mandar el ViewID por el metodo `Instantiate` y luego el PlayerController puede leer este valor y encontrar el PlayerManager
-        playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), Vector3.zero, Quaternion.identity, 0, new object[] { pv.ViewID });
+        // el nuevo objeto sirve para mandar el ViewID por el metodo `Instantiate` y luego el PlayerController puede leer este valor y encontrar su PlayerManager
+        Transform spawnPoint = SpawnManager.instance.GetSpawnPoint();
+        playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { pv.ViewID });
     }
 
     public void Die()
