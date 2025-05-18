@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerManager : MonoBehaviour
 {
     PhotonView pv;
     GameObject playerController;
+
+    int kills;
+    int deaths;
 
     void Awake()
     {
@@ -26,7 +32,6 @@ public class PlayerManager : MonoBehaviour
 
     void CreateController()
     {
-        Debug.Log("Instantiated Player Controller");
         // Obtenemos el punto de spawn de la clase `SpawnManager` con el metodo `GetSpawnPoint`
         // Instanciar el PlayerController
         // 0 es un parametro que significa `group` (no se exactamente para que sirve)
@@ -40,5 +45,33 @@ public class PlayerManager : MonoBehaviour
         // Destruimos el PlayerController y luego lo creamos otra vez (Muerte y Respawn)
         PhotonNetwork.Destroy(playerController);
         CreateController();
+
+        deaths++;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("deaths", deaths);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+
+    public void GetKill()
+    {
+        pv.RPC(nameof(RPC_GetKill), pv.Owner);
+    }
+
+    [PunRPC]
+    void RPC_GetKill()
+    {
+        kills++;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("kills", kills);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+
+    public static PlayerManager Find(Player player)
+    {
+        // Esta no es la forma mas adecuada de encontrar un PlayerManager, porque tiene que recorrer todos
+        // Los PlayerManagers de la escena, pero por ahora se queda asi
+        return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.pv.Owner == player);
     }
 }

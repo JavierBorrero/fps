@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     // Actualizar el objeto en la mano para el resto de jugadores
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if (!pv.IsMine && targetPlayer == pv.Owner)
+        if (changedProps.ContainsKey("itemIndex") && !pv.IsMine && targetPlayer == pv.Owner)
         {
             // cast (int) para evitar error: cannot convert from 'object' to 'int'
             EquipItem((int)changedProps["itemIndex"]);
@@ -198,19 +198,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     // ** Explicacion de que es RPC en el README
     public void TakeDamage(float damage)
     {
-        pv.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, damage);
     }
 
     // Esta function se llama en el ordenador de cada jugador, pero `!pv.isMine` evita que sea a nostros
     // a quien nos hace el daño y solo al resto de jugadores.
     // ** Explicacion de que es RPC en el README
     [PunRPC]
-    void RPC_TakeDamage(float damage)
+    void RPC_TakeDamage(float damage, PhotonMessageInfo info)
     {
-        // Asegurarnos de que esta funcion solo se activa en el otro usuario
-        if (!pv.IsMine)
-            return;
-
         currentHealth -= damage;
 
         // Porcentaje entre 0 y 1 de la vida que le queda al personaje.
@@ -221,6 +217,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (currentHealth <= 0)
         {
             Die();
+            // El parametro info es un parametro que rellena automaticamente Photon.
+            // Es util porque podemos mandar el Player que ha enviado el mensaje y luego llamamos al metodo GetKill()
+            PlayerManager.Find(info.Sender).GetKill();
         }
     }
 
