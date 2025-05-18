@@ -4,11 +4,16 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 // Importante para el Hashtable a la hora de sincronizar items entre clientes
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
+    [Header("Healthbar")]
+    public Image healthbarImage;
+    public GameObject ui;
+
     [Header("Player Manager")]
     public PlayerManager playerManager;
 
@@ -67,11 +72,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             EquipItem(0);
         }
-        // Otros jugadores
+        // Componentes de otros jugadores que queremos eliminar porque no son utiles para nuestro jugador
+        // El RB es para evitar doble input
+        // El UI es para no tener los canvas de la healthbar superpuestos unos encima de otros.
         else
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
+            Destroy(ui);
         }
     }
 
@@ -204,6 +212,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             return;
 
         currentHealth -= damage;
+
+        // Porcentaje entre 0 y 1 de la vida que le queda al personaje.
+        // si tenemos 100 de vida: 100/100 = 1 (100% de la barra de vida)
+        // si tenemos 50 de vida: 50/100 = 0.5 (50% de la barra de vida)
+        healthbarImage.fillAmount = currentHealth / maxHealth;
 
         if (currentHealth <= 0)
         {
