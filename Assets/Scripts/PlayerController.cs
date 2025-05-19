@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Runtime.InteropServices;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -65,6 +63,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         isSprinting = false;
 
         // Cliente (yo)
@@ -262,4 +263,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             isSprinting = false;
         }
     }
+
+    public void OnTab(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Scoreboard.instance.canvasGroup.alpha = 1;
+        }
+        else if (context.canceled)
+        {
+            Scoreboard.instance.canvasGroup.alpha = 0;
+        }
+    }
+
+    // public void OnEscape(InputAction.CallbackContext context)
+    // {
+    //     if (context.started)
+    //     {
+    //         Cursor.lockState = CursorLockMode.None;
+    //         Cursor.visible = true;
+    //     }
+    // }
 }

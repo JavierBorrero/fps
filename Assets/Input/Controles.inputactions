@@ -27,7 +27,7 @@
                     "name": "Jump",
                     "type": "Value",
                     "id": "eb8efbf1-aa60-4342-8d9d-4a6b94652085",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -36,7 +36,25 @@
                     "name": "Sprint",
                     "type": "Value",
                     "id": "8ef8d257-72e4-4ff6-976d-dcd5826ce7c3",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Tab",
+                    "type": "Value",
+                    "id": "1e6c249d-7f71-4387-bcc8-b66153c54fdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Escape",
+                    "type": "Value",
+                    "id": "d02b94f1-e0bc-430f-a378-11741bd0c4ab",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -122,23 +140,34 @@
                 },
                 {
                     "name": "",
-                    "id": "550e8424-3590-49a3-ae57-4fda870e5b33",
-                    "path": "<Mouse>/scroll/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "47336b28-e134-47ac-9a45-d6807397e6cb",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcf37e9d-ec1f-429d-b338-193a38b66847",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "951a9ea6-c2f5-4c07-8348-8ca93d29775c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

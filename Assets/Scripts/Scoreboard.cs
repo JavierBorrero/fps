@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 
 public class Scoreboard : MonoBehaviourPunCallbacks
 {
+    // Añadir esto para poder asignar el Tab como tecla en el PlayerInput del PlayerController
+    public static Scoreboard instance;
+
     [Header("Container")]
     public Transform container;
 
@@ -19,6 +22,11 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     // Como necesitamos referencias a los scoreboardItems en base al Player que sea, creamos
     // un diccionario con clave el Player y ScoreboardItem su scoreboardItem correspondiente
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -50,19 +58,4 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     {
         RemoveScoreboardItem(otherPlayer);
     }
-
-    // No he podido pasar al PlayerInput la accion de sacar el marcador con el Tab
-    // Se va a quedar hecho con el Input antiguo
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            canvasGroup.alpha = 1;
-        }
-        else if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            canvasGroup.alpha = 0;
-        }
-    }
-    
 }

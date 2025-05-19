@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerNameManager : MonoBehaviour
 {
     [Header("Input Username")]
     public TMP_InputField usernameInput;
+
+    [Header("Game Buttons")]
+    public Button createRoomButton;
+    public Button findRoomButton;
 
     void Start()
     {
@@ -25,6 +28,17 @@ public class PlayerNameManager : MonoBehaviour
 
     public void OnUsernameInputValueChanged()
     {
+        if (usernameInput.text.Trim() == "")
+        {
+            createRoomButton.enabled = false;
+            findRoomButton.enabled = false;
+        }
+        else
+        {
+            createRoomButton.enabled = true;
+            findRoomButton.enabled = true;
+        }
+
         PhotonNetwork.NickName = usernameInput.text;
         PlayerPrefs.SetString("username", usernameInput.text);
     }

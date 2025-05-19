@@ -1110,9 +1110,9 @@ MonoBehaviour:
   playerManager: {fileID: 0}
   cameraHolder: {fileID: 5161402451294734894}
   mouseSensitivity: 1
-  sprintSpeed: 10
+  sprintSpeed: 6
   walkSpeed: 3
-  jumpForce: 300
+  jumpForce: 250
   smoothTime: 0.15
   items:
   - {fileID: 6561082982570996710}
@@ -1209,6 +1209,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8ef8d257-72e4-4ff6-976d-dcd5826ce7c3
     m_ActionName: Player/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1783954023786467056}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnTab
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1e6c249d-7f71-4387-bcc8-b66153c54fdf
+    m_ActionName: Player/Tab[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1783954023786467056}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnEscape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d02b94f1-e0bc-430f-a378-11741bd0c4ab
+    m_ActionName: Player/Escape[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
