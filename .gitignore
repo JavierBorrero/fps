@@ -76,6 +76,7 @@ crashlytics-build.properties
 
 ### VisualStudioCode ###
 .vscode/
+*.vsconfig
 
 # Local History for Visual Studio Code
 .history/

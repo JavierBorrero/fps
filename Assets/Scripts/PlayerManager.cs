@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -34,8 +35,8 @@ public class PlayerManager : MonoBehaviour
     {
         // Obtenemos el punto de spawn de la clase `SpawnManager` con el metodo `GetSpawnPoint`
         // Instanciar el PlayerController
-        // 0 es un parametro que significa `group` (no se exactamente para que sirve)
-        // el nuevo objeto sirve para mandar el ViewID por el metodo `Instantiate` y luego el PlayerController puede leer este valor y encontrar su PlayerManager
+        // 0 es un parametro que significa `group` (no se exactamente para que sirve, pero Photon lo maneja automaticamente)
+        // `new object[]` sirve para mandar el ViewID por el metodo `Instantiate` y luego el PlayerController puede leer este valor y encontrar su PlayerManager
         Transform spawnPoint = SpawnManager.instance.GetSpawnPoint();
         playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { pv.ViewID });
     }
