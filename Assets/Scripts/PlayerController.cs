@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [Header("Camera Holder")]
     public GameObject cameraHolder;
 
+    [Header("Mouse Sensitivity")]
+    public float mouseSensitivity = 1f;
+
     [Header("Movement")]
     public float sprintSpeed;
     public float walkSpeed;
@@ -33,8 +36,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public Item[] items;
     int itemIndex;
     int previousItemIndex = -1;
-
-    float mouseSensitivity;
 
     float verticalLookRotation;
     public bool grounded;
@@ -62,9 +63,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Start()
     {
-        isSprinting = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-        mouseSensitivity = PlayerPrefs.GetFloat("sensitivity");
+        isSprinting = false;
 
         // Cliente (yo)
         if (pv.IsMine)
@@ -197,14 +199,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     #region Player Damages and death
 
     // Esta funcion se llama cada vez que el jugador dispara y golpea a un jugador, y solo se llama desde el que ha disparado
-    // ** Explicacion de que es RPC en el README
+    // RPC (Remote Procedure Call) Es una caracteristica de Photon y sirve para ejecutar metodos en el resto de jugadores
+    // ** Explicacion extendida en el README
     public void TakeDamage(float damage)
     {
         pv.RPC(nameof(RPC_TakeDamage), pv.Owner, damage);
     }
 
     // Esta function se llama en el ordenador de cada jugador
-    // ** Explicacion de que es RPC en el README
+    // RPC (Remote Procedure Call) Es una caracteristica de Photon y sirve para ejecutar metodos en el resto de jugadores
+    // ** Explicacion extendida en el README
     [PunRPC]
     void RPC_TakeDamage(float damage, PhotonMessageInfo info)
     {
