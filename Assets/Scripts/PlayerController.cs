@@ -19,9 +19,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [Header("Camera Holder")]
     public GameObject cameraHolder;
 
-    [Header("Mouse Sens")]
-    public float mouseSensitivity;
-
     [Header("Movement")]
     public float sprintSpeed;
     public float walkSpeed;
@@ -37,6 +34,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     int itemIndex;
     int previousItemIndex = -1;
 
+    float mouseSensitivity;
 
     float verticalLookRotation;
     public bool grounded;
@@ -64,10 +62,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         isSprinting = false;
+
+        mouseSensitivity = PlayerPrefs.GetFloat("sensitivity");
 
         // Cliente (yo)
         if (pv.IsMine)
@@ -87,14 +84,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Update()
     {
-        // Si no soy el dueño devuelvo return (Lado del cliente)
+        // Si no soy el dueño no hago nada
         if (!pv.IsMine) return;
 
         Look();
         Move();
 
         // *** Nota: Esta parte de codigo esta usando el Input antiguo
-        // De momento no se como implementar esto usando Input System asique se va a quedar asi
+        // De momento no he conseguido implementar esto usando Input System
         // Recorremos toda la lista de items que tiene el personaje
         for (int i = 0; i < items.Length; i++)
         {
@@ -121,6 +118,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void FixedUpdate()
     {
+        // Si no soy el dueño no hago nada
         if (!pv.IsMine)
         {
             return;
@@ -153,6 +151,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         rb.AddForce(transform.up * jumpForce);
     }
     
+    // Esto se maneja desde PlayerGroundCheck.cs
     public void SetGroundedState(bool _grounded)
     {
         grounded = _grounded;

@@ -1,12 +1,17 @@
+using System;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerNameManager : MonoBehaviour
+public class PlayerPreferencesManager : MonoBehaviour
 {
     [Header("Input Username")]
     public TMP_InputField usernameInput;
+
+    [Header("Sensitivity Slider")]
+    public Slider slider;
+    public TMP_Text sliderValueText;
 
     [Header("Game Buttons")]
     public Button createRoomButton;
@@ -21,7 +26,7 @@ public class PlayerNameManager : MonoBehaviour
         }
         else
         {
-            usernameInput.text = "Player " + Random.Range(0, 1000).ToString("0000");
+            usernameInput.text = "Player " + UnityEngine.Random.Range(0, 1000).ToString("0000");
             OnUsernameInputValueChanged();
         }
     }
@@ -41,5 +46,11 @@ public class PlayerNameManager : MonoBehaviour
 
         PhotonNetwork.NickName = usernameInput.text;
         PlayerPrefs.SetString("username", usernameInput.text);
+    }
+
+    public void OnSliderValueChanged()
+    {
+        PlayerPrefs.SetFloat("sensitivity", slider.value);
+        sliderValueText.text = Math.Round(slider.value, 2).ToString();
     }
 }
