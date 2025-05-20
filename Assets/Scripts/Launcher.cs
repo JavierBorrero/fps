@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -59,8 +60,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         Player[] players = PhotonNetwork.PlayerList;
 
+        // Reset custom props
+        Hashtable props = new Hashtable();
+        props["kills"] = 0;
+        props["deaths"] = 0;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
         // Destruir la lista de players para evitar jugadores duplicados
-        foreach(Transform child in playerListContent)
+        foreach (Transform child in playerListContent)
         {
             Destroy(child.gameObject);
         }

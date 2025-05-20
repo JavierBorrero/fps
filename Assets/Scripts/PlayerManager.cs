@@ -16,6 +16,8 @@ public class PlayerManager : MonoBehaviour
     int kills;
     int deaths;
 
+    bool winnerAnnounced = false;
+
     void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -29,6 +31,11 @@ public class PlayerManager : MonoBehaviour
         {
             CreateController();
         }
+    }
+
+    void Update()
+    {
+        CheckWinner();   
     }
 
     void CreateController()
@@ -67,6 +74,26 @@ public class PlayerManager : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+
+    void CheckWinner()
+    {
+        if (winnerAnnounced) return;
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("kills", out object kills))
+        {
+            if (kills.ToString() == "2")
+            {
+                winnerAnnounced = true;
+                pv.RPC(nameof(SetWinner), RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+            }
+        }
+    }
+
+    [PunRPC]
+    void SetWinner(string playerName)
+    {
+        WinnerManager.instance.DisplayWinner(playerName);
     }
 
     public static PlayerManager Find(Player player)

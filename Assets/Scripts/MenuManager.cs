@@ -16,9 +16,9 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(string menuName)
     {
-        for(int i = 0; i < menus.Length; i++)
+        for (int i = 0; i < menus.Length; i++)
         {
-            if(menus[i].menuName == menuName)
+            if (menus[i].menuName == menuName)
             {
                 menus[i].Open();
             }
@@ -31,9 +31,9 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        for(int i = 0; i < menus.Length; i++)
+        for (int i = 0; i < menus.Length; i++)
         {
-            if(menus[i].open)
+            if (menus[i].open)
             {
                 CloseMenu(menus[i]);
             }
@@ -44,5 +44,10 @@ public class MenuManager : MonoBehaviour
     public void CloseMenu(Menu menu)
     {
         menu.Close();
+    }
+
+    public void CloseGame()
+    {
+        Application.Quit();
     }
 }

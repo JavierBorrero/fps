@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -128,7 +129,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
-    // === MOVIMIENTO DE CAMARA ===
+    #region Vista, Movimiento, Salto y Grounded del Personaje
+
     void Look()
     {
         transform.Rotate(Vector3.up * mouseInput.x * mouseSensitivity);
@@ -138,22 +140,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
     }
-
-    // === MOVIMIENTO DEL PERSONAJE ===
+    
     void Move()
     {
         moveDir = new Vector3(keyboardInput.x, 0, keyboardInput.y).normalized;
 
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (isSprinting ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
     }
-
-    // === SALTO ===
+    
     void Jump()
     {
         rb.AddForce(transform.up * jumpForce);
     }
+    
+    public void SetGroundedState(bool _grounded)
+    {
+        grounded = _grounded;
+    }
+    #endregion
 
-    // === EQUIP ITEMS ===
+    #region Player Equip Items
+
     void EquipItem(int _index)
     {
         if (_index == previousItemIndex) return;
@@ -186,15 +193,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             EquipItem((int)changedProps["itemIndex"]);
         }
     }
+    #endregion
 
-    // === SET GROUNDED ===
-    public void SetGroundedState(bool _grounded)
-    {
-        grounded = _grounded;
-    }
+    #region Player Damages and death
 
-    // === TAKE DAMAGE ===
-    //
     // Esta funcion se llama cada vez que el jugador dispara y golpea a un jugador, y solo se llama desde el que ha disparado
     // ** Explicacion de que es RPC en el README
     public void TakeDamage(float damage)
@@ -202,8 +204,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         pv.RPC(nameof(RPC_TakeDamage), pv.Owner, damage);
     }
 
-    // Esta function se llama en el ordenador de cada jugador, pero `!pv.isMine` evita que sea a nostros
-    // a quien nos hace el daño y solo al resto de jugadores.
+    // Esta function se llama en el ordenador de cada jugador
     // ** Explicacion de que es RPC en el README
     [PunRPC]
     void RPC_TakeDamage(float damage, PhotonMessageInfo info)
@@ -228,8 +229,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         playerManager.Die();
     }
+    #endregion
 
-    // === INPUT SYSTEM ===
+    #region InputSystem
+
     public void OnLook(InputAction.CallbackContext context)
     {
         mouseInput = context.ReadValue<Vector2>();
@@ -275,13 +278,5 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Scoreboard.instance.canvasGroup.alpha = 0;
         }
     }
-
-    // public void OnEscape(InputAction.CallbackContext context)
-    // {
-    //     if (context.started)
-    //     {
-    //         Cursor.lockState = CursorLockMode.None;
-    //         Cursor.visible = true;
-    //     }
-    // }
+    #endregion
 }

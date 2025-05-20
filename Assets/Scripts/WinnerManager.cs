@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WinnerManager : MonoBehaviour
@@ -14,28 +16,40 @@ public class WinnerManager : MonoBehaviour
     public TMP_Text winnerText;
     public Button backToMenuButton;
 
+    [Header("Winner Cam")]
+    public GameObject cam;
+
     void Awake()
     {
         instance = this;
     }
 
-    // No se si manejar esta logica desde el PlayerManager es lo mas logico, pero como 
-    // es el script que tiene el contador de las kills me parecia lo mas logico
-    void Update()
-    {
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("kills", out object kills))
-        {
-            Debug.Log(kills.ToString());
-            if (kills.ToString() == "2")
-            {
-                WinnerManager.instance.DisplayWinner(PhotonNetwork.LocalPlayer.NickName);
-            }
-        }
-    }
-
     public void DisplayWinner(string playerNickname)
     {
+        cam.SetActive(true);
+
         winnerCanvas.SetActive(true);
         winnerText.text = "Winner: " + playerNickname;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        PhotonNetwork.AutomaticallySyncScene = false;
+    }
+
+    public void LoadMainMenu()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        winnerCanvas.SetActive(false);
+
+        // Destruir RoomManager instance al cargar para evitar problemas de objetos duplicados con Photon
+        if (RoomManager.instance != null)
+        {
+            Destroy(RoomManager.instance.gameObject);
+            RoomManager.instance = null;
+        }
+
+        PhotonNetwork.LoadLevel(0);
     }
 }
